@@ -1,0 +1,15 @@
+# PlutOS.01
+Pluto Operating System
+
+[default-host.sh]
+-This is where the symbol for the compile host arch is set
+	-Currently using i686-elf as target
+
+[config.sh]
+-This is where all of the global compiler variables and destination directories
+	are defined
+-In this file we tell the compiler to use the 'sysroot' directory that will be
+	created in (pwd). This is because we do not want to use the sysroot 
+	of the system we are developing on. Allows us to develop a freestanding application
+
+
