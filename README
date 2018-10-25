@@ -1,6 +1,12 @@
 # PlutOS.01
 Pluto Operating System
 
+pluto.iso is the image file of the entire project
+	-Compiled as x86_64
+	-Can be used with any emulator
+		-Must define flag to load with cdrom, not elf
+
+
 [default-host.sh]
 -This is where the symbol for the compile host arch is set
 	-Currently using i686-elf as target
