@@ -13,4 +13,3 @@ menuentry "pluto" {
 }
 EOF
 grub-mkrescue -o pluto.iso isodir
-

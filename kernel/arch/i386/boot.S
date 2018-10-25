@@ -10,7 +10,7 @@
 	.align 4
 	.long MAGIC
 	.long FLAGS
-	.long CHECKSUm
+	.long CHECKSUM
 
 
 .section .data
@@ -20,7 +20,7 @@
 	.align 16
 	stack_bottom:
 		.skip 16384 # 16KB stack
-	stack_top
+	stack_top:
 
 #This is the entry point for the kernel
 .section .text
