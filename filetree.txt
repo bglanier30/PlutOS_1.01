@@ -1,0 +1,108 @@
+.
+├── build.sh
+├── clean.sh
+├── config.sh
+├── default-host.sh
+├── filetree.txt
+├── headers.sh
+├── isodir
+│   └── boot
+│       ├── grub
+│       │   └── grub.cfg
+│       └── pluto.kernel
+├── iso.sh
+├── kernel
+│   ├── arch
+│   │   └── i386
+│   │       ├── boot.d
+│   │       ├── boot.o
+│   │       ├── boot.S
+│   │       ├── crtbegin.o
+│   │       ├── crtend.o
+│   │       ├── crti.d
+│   │       ├── crti.o
+│   │       ├── crti.S
+│   │       ├── crtn.d
+│   │       ├── crtn.o
+│   │       ├── crtn.S
+│   │       ├── linker.ld
+│   │       ├── make.config
+│   │       ├── tty.c
+│   │       ├── tty.d
+│   │       ├── tty.o
+│   │       └── vga.h
+│   ├── include
+│   │   └── kernel
+│   │       └── tty.h
+│   ├── kernel
+│   │   ├── kernel.c
+│   │   ├── kernel.d
+│   │   └── kernel.o
+│   ├── Makefile
+│   └── pluto.kernel
+├── libc
+│   ├── arch
+│   │   └── i386
+│   │       └── make.config
+│   ├── include
+│   │   ├── stdio.h
+│   │   ├── stdlib.h
+│   │   ├── string.h
+│   │   └── sys
+│   │       └── cdefs.h
+│   ├── libk.a
+│   ├── Makefile
+│   ├── stdio
+│   │   ├── printf.c
+│   │   ├── printf.libk.d
+│   │   ├── printf.libk.o
+│   │   ├── putchar.c
+│   │   ├── putchar.libk.d
+│   │   ├── putchar.libk.o
+│   │   ├── puts.c
+│   │   ├── puts.libk.d
+│   │   └── puts.libk.o
+│   ├── stdlib
+│   │   ├── abort.c
+│   │   ├── abort.libk.d
+│   │   └── abort.libk.o
+│   └── string
+│       ├── itoa.c
+│       ├── itoa.libk.d
+│       ├── itoa.libk.o
+│       ├── memcmp.c
+│       ├── memcmp.libk.d
+│       ├── memcmp.libk.o
+│       ├── memcpy.c
+│       ├── memcpy.libk.d
+│       ├── memcpy.libk.o
+│       ├── memmove.c
+│       ├── memmove.libk.d
+│       ├── memmove.libk.o
+│       ├── memset.c
+│       ├── memset.libk.d
+│       ├── memset.libk.o
+│       ├── strlen.c
+│       ├── strlen.libk.d
+│       └── strlen.libk.o
+├── pluto.iso
+├── qemu.sh
+├── README
+├── run.sh
+├── sysroot
+│   ├── boot
+│   │   └── pluto.kernel
+│   └── usr
+│       ├── include
+│       │   ├── kernel
+│       │   │   └── tty.h
+│       │   ├── stdio.h
+│       │   ├── stdlib.h
+│       │   ├── string.h
+│       │   └── sys
+│       │       └── cdefs.h
+│       └── lib
+│           └── libk.a
+└── target-triplet-to-arch.sh
+
+24 directories, 81 files
