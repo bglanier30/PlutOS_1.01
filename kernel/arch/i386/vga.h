@@ -32,7 +32,7 @@ static inline uint16_t vga_entry(unsigned char uc, uint8_t color) {
 
 static inline uint8_t vga_entry_color_cursor(enum vga_color fg, enum vga_color bg)
 {
-		return fg | bg << 4;
+	return fg | bg << 4;
 }
 
 static inline void outb(uint16_t port, uint8_t val)
@@ -51,4 +51,28 @@ static inline uint8_t inb(uint16_t port)
     return ret;
 }
 
+static inline void disable_cursor(void)
+{
+	outb( 0x3D4, 0x0A);
+	outb( 0x3D5, 0x20);
+}
+
+static inline void enable_cursor(unsigned char cursor_start, unsigned char cursor_end)
+{
+	outb(0x3d4, 0x0A);
+	outb(0x3D5, (inb(0x3D5) & 0xC0) | cursor_start);
+
+	outb(0x3d4, 0x0B);
+	outb(0x3D5, (inb(0x3D5) & 0xE0) | cursor_end);
+}
+
+static inline void update_cursor(size_t x, size_t y, size_t vga_width)
+{
+	uint16_t pos = y * vga_width + x;
+ 
+	outb(0x3D4, 0x0F);
+	outb(0x3D5, (uint8_t) (pos & 0xFF));
+	outb(0x3D4, 0x0E);
+	outb(0x3D5, (uint8_t) ((pos >> 8) & 0xFF));
+}
 #endif
