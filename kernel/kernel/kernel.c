@@ -1,4 +1,5 @@
 #include <kernel/tty.h>
+#include <gdt.h>
 #include <stdio.h>
 #include <string.h>
 #include <stdint.h>
@@ -14,6 +15,7 @@ void kernel_main(void)
 
 void kernel_init()
 {
+	init_gdt_table();
 	printf("This is a test\n");
 	k_print_errmsg("This is the second test\n");
 	printf("If you see this, err msgs work\n");

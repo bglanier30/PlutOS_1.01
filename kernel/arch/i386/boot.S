@@ -25,7 +25,12 @@
 #This is the entry point for the kernel
 .section .text
 	.global _start
+	.global _setGdt
+	.type _setGdt, @function
 	.type _start, @function
+	gdtr:
+		.short 0
+		.long 0
 	
 
 	_start:
@@ -38,6 +43,15 @@
 		cli			# clear interrupts
 	1:	hlt			# halt execution
 		jmp 1b
+
+
+	_setGdt:
+		movl 4(%esp), %eax
+		movl %eax, (gdtr + 2)
+		mov 8(%esp), %ax
+		mov %ax, gdtr
+		lgdt  gdtr
+		ret
 
 
 	.size _start, . - _start
