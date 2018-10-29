@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <kernel/tty.h>
+#include <kernel/sys/ksys.h>
 #include <gdt.h>
 
 extern void _setGdt(void*, int);
@@ -75,7 +76,7 @@ void encodedGdtEntry(uint8_t *target, struct GDT source)
 {
 	if((source.limit > 65536) && ((source.limit & 0xfff) != 0xfff) )
 	{	
-//		kerror("Error in gdt.c [void encodedGdtEntry(uint8_t, struct GDT)]");
+		kerror("Error in gdt.c [void encodedGdtEntry(uint8_t, struct GDT)]");
 	}
 	if(source.limit & 0x010000) // source.limit bit 17 = granularity
 	{

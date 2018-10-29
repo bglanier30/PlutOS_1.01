@@ -83,6 +83,15 @@ void k_terminal_writestring(const char* data)
 	k_terminal_write(data, strlen(data));
 }
 
+void k_terminal_clear_row(size_t row)
+{
+	for(size_t x = 0; x < VGA_WIDTH; x++)
+	{
+		const size_t index = row * VGA_WIDTH + x;
+		terminal_buffer[index] = vga_entry(' ', terminal_color);
+	}
+}
+
 void k_terminal_set_row(size_t row)
 {
 	terminal_row = row;
@@ -92,6 +101,17 @@ void k_terminal_set_row(size_t row)
 size_t k_terminal_get_row()
 {
 	return terminal_row;
+}
+
+void k_terminal_set_col(size_t col)
+{
+	terminal_column = col;
+	update_cursor(terminal_column, terminal_row, VGA_WIDTH);
+}
+
+size_t k_terminal_get_col()
+{
+	return terminal_column;
 }
 
 void k_terminal_set_color(uint8_t color)
@@ -104,7 +124,10 @@ uint8_t k_terminal_get_color(void)
 	return terminal_color;
 }
 
-
+size_t k_terminal_get_width(void)
+{
+	return VGA_WIDTH;
+}
 
 
 
