@@ -5,30 +5,24 @@
 #include "gdt.h"
 
 
-static struct GDT		gdt_arr[6]; // this stores the 'readable' entries
-static struct GDT_ENTRY	gdt_entries[6];// this stores the 'packed' entries
-struct GDT_PTR	_gp;
-//TODO:Find out if this data structure is correct
-static struct TSS	default_tss;
-
 extern void _setGdt(void*, int);
 extern void _gdt_flush();
 
-void load_gdt(struct GDT_ENTRY *gdt_ptr, 
-		unsigned int data_sel, unsigned int code_sel);
-
+static struct GDT		gdt_arr[6]; // this stores the 'readable' entries
+static struct GDT_ENTRY	gdt_entries[6];// this stores the 'packed' entries
+static struct TSS	default_tss;
 
 void install_gdt_table()
 {
 	memset(gdt_arr, 0, sizeof(gdt_arr));
 	memset(gdt_entries, 0, sizeof(gdt_entries));
-	memset(&default_tss, 0, sizeof(default_tss));
-
+//	memset(&default_tss, 0, sizeof(default_tss));
+/*
 	default_tss.debug_flag = 0x00;
 	default_tss.io_map = 0x00;
 	default_tss.esp0 = 0x1FFF0;
 	default_tss.ss0 = 0x18;
-
+*/
 	_gp.limit = (sizeof(struct GDT_ENTRY) * 6) - 1;
 	_gp.base = (int)&gdt_entries;
 

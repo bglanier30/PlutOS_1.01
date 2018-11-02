@@ -62,7 +62,8 @@ struct  __attribute__ ((__packed__)) TSS{
 	uint16_t debug_flag, io_map;
 };
 
-
+struct GDT_PTR	_gp;
+//TODO:Find out if this data structure is correct
 
 void install_gdt_table(void);
 void encode_gdt_entry(int, struct GDT);

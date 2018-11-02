@@ -1,5 +1,6 @@
 #include <kernel/tty.h>
 #include <kernel/sys/ksys.h>
+#include <kernel/isr/isr_handlers.h>
 #include <stdio.h>
 #include <string.h>
 #include <stdint.h>
@@ -12,7 +13,7 @@
 
 
 
-static void k_print_specs(void);
+static void k_print_specs();
 static int k_section_size(int top, int bottom, char* section);
 
 const char* shiieet = { "Testing kerror 123\n" };
@@ -25,7 +26,22 @@ extern void _reloadSegments(void);
 void kernel_main(void)
 {
 	#define FLAT_SETUP_SEG
+
 	k_terminal_init();
+
+	size_t width = k_terminal_get_width();
+	char asterisk_line[width];
+	size_t old_col = k_terminal_get_col();
+
+	memset(asterisk_line, '*', width-1);
+	asterisk_line[width] = 0x0;
+
+	printf("%s\n",asterisk_line);	
+	k_terminal_set_col((width >> 1) - (strlen(boot_msg) >> 1));	
+	printf("%s\n",boot_msg);
+	k_terminal_set_col(old_col);
+	printf("%s\n",asterisk_line);
+
 	kernel_init();
 }
 
@@ -33,7 +49,10 @@ void kernel_init()
 {
 //	_enterProtectedMode();
 	install_gdt_table();
-
+	install_idt();
+	install_isrs();
+	int x = 5/0;
+	printf("X = %i \n", x);
 	k_print_specs();
 
 	printf("Press Enter to continue...\n");
@@ -53,26 +72,11 @@ static void k_print_specs()
 	extern int _data_top;
 	extern int _data_bottom;
 
-	size_t width = k_terminal_get_width();
 	int totalMemUsage = 0;
-	size_t old_col = k_terminal_get_col();
 
-	char asterisk_line[width];
 	char *stack = {"stack:"};
 	char *text = {"text:"};
 	char test[12];
-
-	memset(asterisk_line, '*', width-1);
-	asterisk_line[width] = 0x0;
-
-
-	printf("%s\n",asterisk_line);
-	
-	k_terminal_set_col((width >> 1) - (strlen(boot_msg) >> 1));	
-	printf("%s\n",boot_msg);
-	k_terminal_set_col(old_col);
-
-	printf("%s\n",asterisk_line);
 
 	totalMemUsage += k_section_size((int)&_stack_top, (int)&_stack_bottom, stack);
 	totalMemUsage += 	k_section_size((int)&_text_top, (int)&_text_bottom, text);
