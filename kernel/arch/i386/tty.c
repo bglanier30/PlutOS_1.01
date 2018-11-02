@@ -16,9 +16,9 @@ static uint16_t*	terminal_buffer;
 
 void k_terminal_init()
 {
-	terminal_row = 0;
+	terminal_row = 1; // reserve first row for msgs
 	terminal_column = 0;
-	terminal_color = vga_entry_color(VGA_COLOR_WHITE, VGA_COLOR_DARK_GREY);
+	terminal_color = vga_entry_color(VGA_COLOR_WHITE, VGA_COLOR_BLACK);
 	terminal_buffer = VGA_MEMORY_ADDR;
 
 	for(size_t y = 0 ; y < VGA_HEIGHT; y++)
@@ -36,11 +36,11 @@ void k_terminal_scroll_up(void)
 {
 	size_t y= 0;
 	size_t x = 0;
-	for(y = 0; y < VGA_HEIGHT; y++)
+	for(y = 1; y < VGA_HEIGHT; y++)// reserve first row for msgs
 	{
 		size_t index = y*VGA_WIDTH+x;
 		size_t nextIndex = (y+1)*VGA_WIDTH + x;
-		for(x = 0; x < VGA_WIDTH || terminal_buffer[index] == '\n'; x++)
+		for(x = 0; x < VGA_WIDTH; x++)
 		{
 			index = y*VGA_WIDTH+x;
 			nextIndex = (y+1)*VGA_WIDTH + x;
@@ -52,20 +52,19 @@ void k_terminal_scroll_up(void)
 void k_terminal_putentryat(unsigned char c, uint8_t color, size_t x, size_t y)
 {
 	const size_t index = y * VGA_WIDTH + x;
-	terminal_buffer[index] = vga_entry(c, color | 0x80);
+	terminal_buffer[index] = vga_entry(c, color);
 }
 
 void k_terminal_putchar(char c)
 {
-	unsigned char uc = c;
 	if(c != '\n')
-		k_terminal_putentryat(uc, terminal_color, terminal_column, terminal_row);
+		k_terminal_putentryat(c, terminal_color, terminal_column, terminal_row);
 	if (++terminal_column == VGA_WIDTH || c == '\n') {
 		terminal_column = 0;
 		if (++terminal_row == VGA_HEIGHT)
 		{
 			k_terminal_scroll_up();
-			terminal_row --;
+			--terminal_row;
 		}
 	}
 	update_cursor(terminal_column, terminal_row, VGA_WIDTH);

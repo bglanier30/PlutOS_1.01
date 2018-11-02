@@ -1,0 +1,5 @@
+Platfor: x86
+
+Assembler: gas
+
+Bootloader: grub

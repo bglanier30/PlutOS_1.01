@@ -70,6 +70,26 @@ int printf(const char* restrict format, ...) {
 			if (!print(str, len))
 				return -1;
 			written += len;
+		} else if (*format == 'i') {
+			format++;
+			int i = (int) va_arg(parameters, int);
+			char str[12];
+			size_t len = 0;
+			size_t x = i;
+
+			while( x > 1){
+				++len;
+				x /= 10;
+			}
+
+			if (maxrem < len) {
+				// TODO: Set errno to EOVERFLOW.
+				return -1;
+			} 
+			if(!print(itoa(str,i,10),len))
+				return -1;
+
+			written += len;
 		} else {
 			format = format_begun_at;
 			size_t len = strlen(format);

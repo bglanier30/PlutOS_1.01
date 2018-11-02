@@ -19,24 +19,13 @@ void kerror(const char* message)
 	k_terminal_clear_row(0);
 	k_terminal_set_col((width >> 1) - (strlen(message) >> 1));
 
-	k_terminal_set_color(vga_entry_color(VGA_COLOR_BLACK,VGA_COLOR_RED));
+	k_terminal_set_color(vga_entry_color(VGA_COLOR_WHITE,VGA_COLOR_RED));
 	
 	if(strlen(message) > k_terminal_get_width()){
 		printf("ERR MSG TO LONG: size = %s \n", itoa(temp,5,10));
 	} else {
-
-		/*
-		char err_msg[width - strlen(message)];
-		half = (width - strlen(message)) >> 1;
-//
-		half = (half & 0x01 ) ? (half >> 1 ) + 1 : half >> 1;
-
-		memset(err_msg, ' ', half);
-		memcpy(&err_msg[half], message, strlen(message)-1);
-		memset(&err_msg[half+strlen(message)], ' ', half);
-		err_msg[width - strlen(message)-1] = '\n';
-		err_msg[width - strlen(message)] = '\0';*/
 		printf(message);
+		//k_terminal_writestring(message);
 	}
 	
 	k_terminal_set_row(old_row);
