@@ -7,6 +7,7 @@
 #define KDS_DESC	0x92
 #define UCS_DESC	0xFA
 #define UDS_DESC	0xF2
+#define DATA_SEL	0x10
 
 #define TSS_DESC	0xE9
 
@@ -62,7 +63,6 @@ struct  __attribute__ ((__packed__)) TSS{
 	uint16_t debug_flag, io_map;
 };
 
-struct GDT_PTR	_gp;
 //TODO:Find out if this data structure is correct
 
 void install_gdt_table(void);

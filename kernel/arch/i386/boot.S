@@ -28,8 +28,7 @@
 	.global _data_top
 	.global _data_bottom
 	.global _start
-	.global _enterProtectedMode
-	.global _gdt_flush
+	.global _load_gdt
 	.global _idt_load
 
 	.global _isr0
@@ -78,10 +77,8 @@
 	.extern _gp
 	.extern _fault_handler
 
-
-	.type _gdt_flush, @function
+	.type _load_gdt,  @function
 	.type _enterProtectedMode, @function
-	.type _setGdt, @function
 	.type _start, @function
 	.type _isr_dummy_handler, @function
 
@@ -95,7 +92,8 @@
 	1:	hlt			# halt execution
 		jmp	1b
 
-	_gdt_flush:
+	_load_gdt:
+		#
 		lgdt	_gp
 		mov	$0x10, %ax
 		mov	%ax,	%ds
@@ -106,70 +104,63 @@
 		jmp	$0x08, $flush2
 	flush2:
 		ret
-		
+
 	_idt_load:
 		lidt	_idtp
 		ret
 
-	_enterProtectedMode:
-#		cli				# clear interrupts
-#		lgdt	gdtr 		# load gdt reg with start addr of GDT
-#		mov %eax, %cr0		
-#		or %al, 1			# set Protection Enable bit in CR0
-#		mov %cr0, %eax
-		ret
-
 	_isr0: #Divide by 0
 		cli
-		push $0
-		push $0
+		push $0	#error code
+		push $0	#int num
 		jmp _isr_dummy_handler
 
 	_isr1: #Debug Exception
 		cli
-		push $0
-		push $1
+		push $0	#error code
+		push $1	#int num
 		jmp _isr_dummy_handler
 
 	_isr2: #NMI exception
 		cli
-		push $0
-		push $2
+		push $0	#error code
+		push $2	#int num
 		jmp _isr_dummy_handler
 
 	_isr3: #Breakpont exception
 		cli
-		push $0
-		push $3
+		push $0	#error code
+		push $3	#int num
 		jmp _isr_dummy_handler
 
 	_isr4: #Into Detected overflow excp
 		cli
-		push $0
-		push $4
+		push $0	#error code
+		push $4	#int num
 		jmp _isr_dummy_handler
 
 	_isr5: #Out of bounds exception
 		cli
-		push $0
-		push $5
+		push $0	#error code
+		push $5	#int num
 		jmp _isr_dummy_handler
 
 	_isr6: #Invalid Opcode exception
 		cli
-		push $0
-		push $6
+		push $0	#error code
+		push $6	#int num
 		jmp _isr_dummy_handler
 
 	_isr7: #No coprocessor exception
 		cli
-		push $0
-		push $7
+		push $0	#error code
+		push $7	#int num
 		jmp _isr_dummy_handler
 
 	_isr8: #Double Fault Exception
+		hlt
 		cli
-		push $8
+		push $8	#int num
 		jmp _isr_dummy_handler
 
 #TODO: add isr9-31
@@ -185,11 +176,13 @@
 		mov	%ax, %es
 		mov	%ax, %fs
 		mov	%ax, %gs
-		mov	%eax, %esp
-		push %eax
+		mov	%esp, %eax
+
+		pushl %eax
 		mov $_fault_handler, %eax
-		call *(%eax)
-		pop %eax
+		call %eax
+		popl %eax
+
 		pop %gs
 		pop %fs
 		pop %es

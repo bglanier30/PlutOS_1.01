@@ -16,6 +16,9 @@ void* memmove(void*, const void*, size_t);
 void* memset(void*, int, size_t);
 size_t strlen(const char*);
 
+char* sprintf(const char*, char *);
+
+
 //TODO: find a better place for these declerations
 char* itoa(char*, int,int);
 char* swap(char*, size_t);

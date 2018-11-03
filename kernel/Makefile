@@ -2,7 +2,7 @@ DEFAULT_HOST!=../default-host.sh
 HOST?=DEFAULT_HOST
 HOSTARCH!=../target-triplet-to-arch.sh $(HOST)
 
-CFLAGS?=-O2 -g
+CFLAGS?= -g
 CPPFLAGS?=
 LDFLAGS?=
 LIBS?=
@@ -34,6 +34,7 @@ $(KERNEL_ARCH_OBJS) \
 kernel/kernel.o \
 kernel/sys/kerror.o \
 kernel/isr/isr_handlers.o \
+
 #These are for the assembly files in kernel/arch/i386
 OBJS=\
 $(ARCHDIR)/crti.o \

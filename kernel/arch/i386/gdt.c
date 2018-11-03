@@ -5,11 +5,11 @@
 #include "gdt.h"
 
 
-extern void _setGdt(void*, int);
-extern void _gdt_flush();
+extern void _load_gdt();
 
 static struct GDT		gdt_arr[6]; // this stores the 'readable' entries
 static struct GDT_ENTRY	gdt_entries[6];// this stores the 'packed' entries
+struct GDT_PTR	_gp;
 static struct TSS	default_tss;
 
 void install_gdt_table()
@@ -88,7 +88,7 @@ void install_gdt_table()
 	encode_gdt_entry(4, gdt_arr[4]);// User Data
 	encode_gdt_entry(5, gdt_arr[5]);// TSS
 
-	_gdt_flush();
+	_load_gdt();
 }
 
 
@@ -128,3 +128,4 @@ void encode_gdt_entry(int i, struct GDT source)
 	gdt_entries[i].flags = flags | ((source.limit >> 16) & 0x0F);
 	gdt_entries[i].access = source.access;
 }
+

@@ -47,12 +47,10 @@ void kernel_main(void)
 
 void kernel_init()
 {
-//	_enterProtectedMode();
 	install_gdt_table();
 	install_idt();
 	install_isrs();
-	int x = 5/0;
-	printf("X = %i \n", x);
+
 	k_print_specs();
 
 	printf("Press Enter to continue...\n");
